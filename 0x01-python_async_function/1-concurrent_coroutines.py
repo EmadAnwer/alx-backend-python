@@ -7,13 +7,16 @@ import asyncio
 from typing import List, Callable
 
 
-wait_random: Callable[[int], asyncio.Future[float]] = __import__(
-    "0-basic_async_syntax"
-).wait_random
+wait_random = __import__("0-basic_async_syntax").wait_random
 
 
 async def wait_n(n: int, max_delay: int) -> List[float]:
-    """wait_n"""
+    """
+    wait_n
+    @n: times to call wait_random
+    @max_delay: max delay of wait_random
+    Return: list of all delays
+    """
 
     delays: List[asyncio.Future[float]] = []
     for _ in range(n):
