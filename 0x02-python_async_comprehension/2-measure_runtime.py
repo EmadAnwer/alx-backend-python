@@ -2,6 +2,7 @@
 """
     2-measure_runtime.py
 """
+
 import time
 
 async_comprehension = __import__("1-async_comprehension").async_comprehension
@@ -9,7 +10,7 @@ async_comprehension = __import__("1-async_comprehension").async_comprehension
 
 async def measure_runtime() -> float:
     """measure_runtime"""
-    start: float = time.time()
-    await async_comprehension()
-    end: float = time.time()
-    return end - start
+    start = time.time()
+    [await async_comprehension() for i in range(4)]
+    end = time.time()
+    return (end - start) / 4
