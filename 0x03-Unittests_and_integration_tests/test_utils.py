@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+
 import unittest
+from fastapi import param_functions
 from parameterized import parameterized
 import utils
+from unittest.mock import MagicMock, patch
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -28,6 +31,24 @@ class TestAccessNestedMap(unittest.TestCase):
         """test access_nested_map using invalid inputs"""
         with self.assertRaises(error):
             self.assertEqual(utils.access_nested_map(nested_map, path))
+
+    class TestGetJson(unittest.TestCase):
+        """TestGetJson class"""
+
+        @parameterized.expand(
+            [
+                ("http://example.com", {"payload": True}),
+                ("http://holberton.io", {"payload": False}),
+            ]
+        )
+        @patch("requests.get")
+        def test_get_json(self, test_url, test_payload, requests_mock):
+            """test get_json using by patching requests.get
+            return test_payload
+            """
+            requests_mock.return_value = test_payload
+            get_json_value = utils.get_json(test_url, test_payload)
+            self.assertDictEqual(get_json_value, test_payload)
 
 
 if __name__ == "__main__":
