@@ -27,7 +27,7 @@ class TestAccessNestedMap(unittest.TestCase):
             ({"a": 1}, ("a", "b"), KeyError),
         ]
     )
-    def test_access_nested_map_exception(self, nested_map, path, error):
+    def test_access_nested_map_exception(self, nested_map, path, error) -> None:
         """test access_nested_map using invalid inputs"""
         with self.assertRaises(error):
             self.assertEqual(access_nested_map(nested_map, path))
@@ -43,7 +43,7 @@ class TestGetJson(unittest.TestCase):
         ]
     )
     @patch("requests.get")
-    def test_get_json(self, test_url, test_payload, mock_requests_get):
+    def test_get_json(self, test_url, test_payload, mock_requests_get) -> None:
         """test get_json using by patching requests.getreturn test_payload"""
         mock_json = Mock(return_value=test_payload)
         mock_requests_get.return_value.json = mock_json
