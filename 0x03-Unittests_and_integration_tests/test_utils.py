@@ -49,7 +49,8 @@ class TestAccessNestedMap(unittest.TestCase):
             mock_response = mock_requests_get.return_value
             mock_response.json.return_value = test_payload
             get_json_value = utils.get_json(test_url, test_payload)
-            self.assertDictEqual(get_json_value, test_payload)
+            mock_requests_get.assert_called_once_with(test_url)
+            self.assertEqual(get_json_value, test_payload)
 
 
 if __name__ == "__main__":
