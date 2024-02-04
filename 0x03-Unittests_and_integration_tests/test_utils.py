@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Test for the utils module"""
 import unittest
-from fastapi import param_functions
 from parameterized import parameterized
 from utils import access_nested_map, get_json
 from unittest.mock import patch, Mock
