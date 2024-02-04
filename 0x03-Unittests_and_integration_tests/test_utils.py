@@ -47,8 +47,9 @@ class TestGetJson(unittest.TestCase):
         """test get_json using by patching requests.getreturn test_payload"""
         mock_json = Mock(return_value=test_payload)
         mock_requests_get.return_value.json = mock_json
-        self.assertEqual(utils.get_json(test_url), test_payload)
-        mock_requests_get.assert_called_once()
+        result = utils.get_json(test_url)
+        self.assertEqual(result, test_payload)
+        mock_requests_get.assert_called_once_with(test_url)
 
 
 if __name__ == "__main__":
