@@ -32,23 +32,26 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(error):
             self.assertEqual(utils.access_nested_map(nested_map, path))
 
-    class TestGetJson(unittest.TestCase):
-        """TestGetJson class"""
 
-        @parameterized.expand(
-            [
-                ("http://example.com", {"payload": True}),
-                ("http://holberton.io", {"payload": False}),
-            ]
-        )
-        def test_get_json(self, test_url, test_payload):
-            """Test that utils.get_json returns the expected result."""
-            config = {"return_value.json.return_value": test_payload}
-            patcher = patch("requests.get", **config)
-            mock = patcher.start()
-            self.assertEqual(utils.get_json(test_url), test_payload)
-            mock.assert_called_once()
-            patcher.stop()
+class TestGetJson(unittest.TestCase):
+    """TestGetJson class"""
+
+    @parameterized.expand(
+        [
+            ("http://example.com", {"payload": True}),
+            ("http://holberton.io", {"payload": False}),
+        ]
+    )
+    @patch("requests.get")
+    def test_get_json(self, test_url, test_payload, mock_requests_get):
+        """test get_json using by patching requests.get
+        return test_payload
+        """
+        mock_response = mock_requests_get.return_value
+        mock_response.json.return_value = test_payload
+        get_json_value = utils.get_json(test_url, test_payload)
+        mock_requests_get.assert_called_once_with(test_url)
+        self.assertEqual(get_json_value, test_payload)
 
 
 if __name__ == "__main__":
