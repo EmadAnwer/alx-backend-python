@@ -4,7 +4,7 @@ import unittest
 from fastapi import param_functions
 from parameterized import parameterized
 import utils
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -45,9 +45,10 @@ class TestGetJson(unittest.TestCase):
     @patch("requests.get")
     def test_get_json(self, test_url, test_payload, mock_requests_get):
         """test get_json using by patching requests.getreturn test_payload"""
-        mock_requests_get.return_value = MagicMock()
-        mock_requests_get.return_value.json.return_value = test_payload
+        mock_json = Mock(return_value=test_payload)
+        mock_requests_get.return_value.json = mock_json
         self.assertEqual(utils.get_json(test_url), test_payload)
+        mock_requests_get.assert_called_once()
 
 
 if __name__ == "__main__":
