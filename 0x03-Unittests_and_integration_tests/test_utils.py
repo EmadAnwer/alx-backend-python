@@ -3,9 +3,8 @@
 import unittest
 from fastapi import param_functions
 from parameterized import parameterized
-import utils
-from unittest.mock import MagicMock, Mock, patch
-import requests
+from utils import access_nested_map, get_json
+from unittest.mock import patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -20,7 +19,7 @@ class TestAccessNestedMap(unittest.TestCase):
     )
     def test_access_nested_map(self, nested_map, path, output) -> None:
         """test access_nested_map"""
-        self.assertEqual(utils.access_nested_map(nested_map, path), output)
+        self.assertEqual(access_nested_map(nested_map, path), output)
 
     @parameterized.expand(
         [
@@ -31,7 +30,7 @@ class TestAccessNestedMap(unittest.TestCase):
     def test_access_nested_map_exception(self, nested_map, path, error):
         """test access_nested_map using invalid inputs"""
         with self.assertRaises(error):
-            self.assertEqual(utils.access_nested_map(nested_map, path))
+            self.assertEqual(access_nested_map(nested_map, path))
 
 
 class TestGetJson(unittest.TestCase):
@@ -48,7 +47,7 @@ class TestGetJson(unittest.TestCase):
         """test get_json using by patching requests.getreturn test_payload"""
         mock_json = Mock(return_value=test_payload)
         mock_requests_get.return_value.json = mock_json
-        result = utils.get_json(test_url)
+        result = get_json(test_url)
         self.assertEqual(result, test_payload)
         mock_requests_get.assert_called_once_with(test_url)
 
