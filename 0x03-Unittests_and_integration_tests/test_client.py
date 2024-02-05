@@ -38,6 +38,7 @@ class TestGithubOrgClient(unittest.TestCase):
         new_callable=PropertyMock,
     )
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
+        """test public_repos using PropertyMock"""
         test_instance = GithubOrgClient("test")
         mock_public_repos_url.return_value = "www.test.com"
         repos_list = {"repos": ["r1", "r2", "r3", "...etc"]}
