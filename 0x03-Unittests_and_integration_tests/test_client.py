@@ -24,6 +24,14 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(output, test_init.org)
         mock_get_json.assert_called_once()
 
+    @patch("client.get_json")
+    def test_public_repos_url(self, mock_get_json):
+        """test client.get_json to check the _public_repos_url behavior"""
+        test_init = GithubOrgClient("test")
+        output = {"repos_url": "www.test.com"}
+        mock_get_json.return_value = output
+        self.assertEqual(test_init._public_repos_url, output["repos_url"])
+
 
 if __name__ == "__main__":
     unittest.main()
