@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test for the clinet module"""
 import unittest
-from unittest.mock import patch
+from unittest.mock import PropertyMock, patch
 from client import GithubOrgClient
 from parameterized import parameterized
 from unittest.mock import patch, Mock
@@ -31,6 +31,16 @@ class TestGithubOrgClient(unittest.TestCase):
         output = {"repos_url": "www.test.com"}
         mock_get_json.return_value = output
         self.assertEqual(test_init._public_repos_url, output["repos_url"])
+
+    @patch("client.get_json")
+    @patch("client.GithubOrgClient._public_repos_url", new_callable=PropertyMock)
+    def test_public_repos(self, mock_public_repos_url, mock_get_json):
+        test_instance = GithubOrgClient("test")
+        mock_public_repos_url.return_value = "www.test.com"
+        repos_list = {"repos": ["r1", "r2", "r3", "...etc"]}
+        mock_get_json.return_value = repos_list
+        self.assertEqual(test_instance.repos_payload, repos_list)
+        mock_get_json.assert_called_once()
 
 
 if __name__ == "__main__":
