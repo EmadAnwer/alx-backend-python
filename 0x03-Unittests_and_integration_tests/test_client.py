@@ -66,13 +66,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     class setUpClass:
         """
-        Set up class
+        Set up class for integration test
         """
 
         @patch("client.get_json")
         def setUp(self, mock_get_json):
             """
-            Set up
+            Set up method for class
             """
             self.test_class = GithubOrgClient("test")
             self.org_payload = {"repos_url": "www.test.com"}
@@ -125,7 +125,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
         self.assertEqual(test_class.public_repos(), self.expected_repos)
         self.assertEqual(test_class.public_repos("XLICENSE"), [])
-        self.assertEqual(test_class.public_repos("apache-2.0"), 
+        self.assertEqual(test_class.public_repos("apache-2.0"),
                          self.apache2_repos)
         self.mock.assert_called()
 
