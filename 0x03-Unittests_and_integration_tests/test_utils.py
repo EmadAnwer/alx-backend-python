@@ -2,8 +2,8 @@
 """Test for the utils module"""
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map, get_json
-from unittest.mock import patch, Mock
+from utils import access_nested_map, get_json, memoize
+from unittest.mock import MagicMock, patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -26,7 +26,7 @@ class TestAccessNestedMap(unittest.TestCase):
             ({"a": 1}, ("a", "b"), KeyError),
         ]
     )
-    def test_access_nested_map_exception(self, nested_map, path, error) -> None:
+    def test_access_nested_map_exception(self, nested_map, path, error):
         """test access_nested_map using invalid inputs"""
         with self.assertRaises(error):
             self.assertEqual(access_nested_map(nested_map, path))
@@ -49,6 +49,30 @@ class TestGetJson(unittest.TestCase):
         result = get_json(test_url)
         self.assertEqual(result, test_payload)
         mock_requests_get.assert_called_once_with(test_url)
+
+
+class TestMemoize(unittest.TestCase):
+    """Class for Testing Memoize"""
+
+    def test_memoize(self):
+        """Test memoize"""
+
+        class TestClass:
+
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        with patch.object(TestClass, "a_method") as mock_a_method:
+            mock_a_method.return_value = 10
+
+            instance_of_test_class = TestClass()
+            res = instance_of_test_class.a_property
+            self.assertEqual(instance_of_test_class.a_property, res)
+            mock_a_method.assert_called_once()
 
 
 if __name__ == "__main__":
