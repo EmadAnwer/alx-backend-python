@@ -87,7 +87,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class(
-    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"), TEST_PAYLOAD
+
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    TEST_PAYLOAD
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Class for Integration test of fixtures"""
@@ -123,7 +125,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
         self.assertEqual(test_class.public_repos(), self.expected_repos)
         self.assertEqual(test_class.public_repos("XLICENSE"), [])
-        self.assertEqual(test_class.public_repos("apache-2.0"), self.apache2_repos)
+        self.assertEqual(test_class.public_repos("apache-2.0"), 
+                         self.apache2_repos)
         self.mock.assert_called()
 
     @classmethod
